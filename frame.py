@@ -113,27 +113,32 @@ class CelestialSphereWidget(QWidget):
         start_p = self.project_point(start)
         end_p = self.project_point(end)
         if start_p and end_p:
-            painter.drawLine(start_p, end_p)
+            # 计算二维投影后的实际方向
+            dx = end_p.x() - start_p.x()
+            dy = end_p.y() - start_p.y()
+            angle = math.atan2(dy, dx)
             
             # 绘制箭头
-            arrow_size = 8
-            angle = math.atan2(end_p.y() - start_p.y(), end_p.x() - start_p.x())
+            arrow_size = 12
             p1 = end_p + QPoint(
-                arrow_size * math.cos(angle - math.pi/6),
-                arrow_size * math.sin(angle - math.pi/6)
+                int(arrow_size * math.cos(angle + math.pi/6)),
+                int(arrow_size * math.sin(angle + math.pi/6))
             )
             p2 = end_p + QPoint(
-                arrow_size * math.cos(angle + math.pi/6),
-                arrow_size * math.sin(angle + math.pi/6)
+                int(arrow_size * math.cos(angle - math.pi/6)),
+                int(arrow_size * math.sin(angle - math.pi/6))
             )
+            
+            # 绘制带箭头的线（从地心指向外）
+            painter.drawLine(start_p, end_p)
             painter.drawLine(end_p, p1)
             painter.drawLine(end_p, p2)
             
-            # 绘制标签
-            font = QFont('Arial', 12, QFont.Bold)
-            painter.setFont(font)
-            label_pos = end_p + QPoint(10, -10)
-            painter.drawText(label_pos, label)    
+            # 标签位置调整
+            label_offset = QPoint(
+                int(20 * math.cos(angle)),
+                int(20 * math.sin(angle)))
+            painter.drawText(end_p + label_offset, label)
 
     def draw_labels(self, painter):
         # 设置字体样式
