@@ -146,7 +146,7 @@ class CelestialSphereWidget(QWidget):
         painter.setFont(font)
         
         # 赤道标注（多个位置）
-        for ra in [0, 90, 180, 270]:
+        for ra in [180]:
             pos = self.project_point(self.spherical_to_cartesian(ra, 0))
             if pos:
                 painter.setPen(QColor(0, 255, 255))
@@ -164,7 +164,7 @@ class CelestialSphereWidget(QWidget):
             painter.drawText(south_pos.x(), south_pos.y() + 20, "南极")
         
         # 中央子午线标注（多个纬度）
-        for dec in [-45, 0, 45]:
+        for dec in [-45]:
             pos = self.project_point(self.spherical_to_cartesian(0, dec))
             if pos:
                 painter.setPen(QColor(0, 255, 0))
