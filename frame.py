@@ -94,7 +94,7 @@ class CelestialSphereWidget(QWidget):
         for ra in [0, 90, 180, 270]:
             pos = self.project_point(self.spherical_to_cartesian(ra, 0))
             if pos:
-                painter.setPen(QColor(0, 0, 255))
+                painter.setPen(QColor(0, 255, 255))
                 painter.drawText(pos.x()+5, pos.y()-5, "赤道")
 
         # 极地标注
@@ -313,14 +313,14 @@ class CoordinateConverter(QMainWindow):
 
         
     def create_spherical_group(self):
-        group = QGroupBox("球面坐标系（赤道坐标）")
+        group = QGroupBox("天球球面坐标系")
         group.setStyleSheet("QGroupBox { font-weight: bold; }")
         layout = QFormLayout()
         layout.setContentsMargins(5, 15, 5, 10)
         layout.setVerticalSpacing(12)        
         
         # 赤经输入
-        self.ra_h = self.create_spinbox(0, 179)
+        self.ra_h = self.create_spinbox(0, 23)
         self.ra_m = self.create_spinbox(0, 59)
         self.ra_s = self.create_double_spinbox(0, 59.999)
         ra_widget = self.create_horizontal_widget(
@@ -342,7 +342,7 @@ class CoordinateConverter(QMainWindow):
         layout.addRow("距离 (pc):", self.distance)
         
         # 转换按钮
-        self.to_cartesian_btn = QPushButton('转换为笛卡尔坐标 →')
+        self.to_cartesian_btn = QPushButton('转换为天球空间直角坐标系 →')
         self.to_cartesian_btn.clicked.connect(self.to_cartesian)
         self.to_cartesian_btn.setStyleSheet(self.button_style("#4CAF50"))
         layout.addRow(self.to_cartesian_btn)
@@ -351,7 +351,7 @@ class CoordinateConverter(QMainWindow):
         return group
         
     def create_cartesian_group(self):
-        group = QGroupBox("笛卡尔坐标系")
+        group = QGroupBox("天球空间直角坐标系")
         group.setStyleSheet("QGroupBox { font-weight: bold; }")
         layout = QFormLayout()
         
@@ -363,7 +363,7 @@ class CoordinateConverter(QMainWindow):
         layout.addRow("Y:", self.y_input)
         layout.addRow("Z:", self.z_input)
         
-        self.to_spherical_btn = QPushButton('← 转换为球面坐标')
+        self.to_spherical_btn = QPushButton('← 转换为天球球面坐标系')
         self.to_spherical_btn.clicked.connect(self.to_spherical)
         self.to_spherical_btn.setStyleSheet(self.button_style("#2196F3"))
         layout.addRow(self.to_spherical_btn)
