@@ -84,6 +84,56 @@ class CelestialSphereWidget(QWidget):
         for dec in list(range(-60, 0, 30)) + list(range(30, 90, 30)):
             self.draw_latitude(painter, dec, QColor(100, 150, 200), 1)
 
+        # 绘制坐标系轴
+        self.draw_coordinate_axes(painter)
+
+    def draw_coordinate_axes(self, painter):
+        # 定义坐标轴参数
+        axis_length = 1.2  # 轴长度
+        axis_width = 3      # 线宽
+                
+        # 绘制X轴（春分点方向，红色）
+        x_end = self.spherical_to_cartesian(0, 0, axis_length)
+        self.draw_axis(painter, QVector3D(0, 0, 0), x_end, Qt.red, "X轴", axis_width)
+        
+        # 绘制Y轴（右手系方向，绿色）
+        y_end = self.spherical_to_cartesian(90, 0, axis_length)  # 赤经6小时=90度
+        self.draw_axis(painter, QVector3D(0, 0, 0), y_end, Qt.green, "Y轴", axis_width)
+        
+        # 绘制Z轴（天北极方向，蓝色）
+        z_end = self.spherical_to_cartesian(0, 90, axis_length)
+        self.draw_axis(painter, QVector3D(0, 0, 0), z_end, Qt.blue, "Z轴", axis_width)
+
+    def draw_axis(self, painter, start, end, color, label, width=2):
+        # 绘制轴线
+        pen = QPen(color)
+        pen.setWidth(width)
+        painter.setPen(pen)
+        
+        start_p = self.project_point(start)
+        end_p = self.project_point(end)
+        if start_p and end_p:
+            painter.drawLine(start_p, end_p)
+            
+            # 绘制箭头
+            arrow_size = 8
+            angle = math.atan2(end_p.y() - start_p.y(), end_p.x() - start_p.x())
+            p1 = end_p + QPoint(
+                arrow_size * math.cos(angle - math.pi/6),
+                arrow_size * math.sin(angle - math.pi/6)
+            )
+            p2 = end_p + QPoint(
+                arrow_size * math.cos(angle + math.pi/6),
+                arrow_size * math.sin(angle + math.pi/6)
+            )
+            painter.drawLine(end_p, p1)
+            painter.drawLine(end_p, p2)
+            
+            # 绘制标签
+            font = QFont('Arial', 12, QFont.Bold)
+            painter.setFont(font)
+            label_pos = end_p + QPoint(10, -10)
+            painter.drawText(label_pos, label)    
 
     def draw_labels(self, painter):
         # 设置字体样式
@@ -339,7 +389,7 @@ class CoordinateConverter(QMainWindow):
         
         # 距离输入
         self.distance = self.create_double_spinbox(0, 1e9)
-        layout.addRow("距离 (pc):", self.distance)
+        layout.addRow("向径 (pc):", self.distance)
         
         # 转换按钮
         self.to_cartesian_btn = QPushButton('转换为天球空间直角坐标系 →')
