@@ -1,3 +1,5 @@
+# celestial_coords.py
+
 import math
 
 def hms_to_hours(h, m, s):
