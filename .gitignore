@@ -1,2 +1,17 @@
 /__pycache__/celestial_coords.cpython-39.pyc
 /__pycache__/celestial_coords.cpython-311.pyc
+/frame.spec
+build/frame/Analysis-00.toc
+build/frame/base_library.zip
+build/frame/EXE-00.toc
+build/frame/frame.pkg
+build/frame/PKG-00.toc
+build/frame/PYZ-00.pyz
+build/frame/PYZ-00.toc
+build/frame/warn-frame.txt
+build/frame/xref-frame.html
+build/frame/localpycs/pyimod01_archive.pyc
+build/frame/localpycs/pyimod02_importers.pyc
+build/frame/localpycs/pyimod03_ctypes.pyc
+build/frame/localpycs/pyimod04_pywin32.pyc
+build/frame/localpycs/struct.pyc
