@@ -7,6 +7,7 @@ import sys
 import math
 from celestial_coords import *
 
+
 class CelestialSphereWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
